@@ -1,0 +1,17 @@
+# Forbid files from exercism.io
+*.md
+*test*
+*.txt
+Makefile
+
+# Haskell object files
+*.hi
+
+# Ocaml build files
+ocaml/**/_build/*
+*.mli
+
+# Rust files
+*.lock
+*.toml
+rust/**/target/**
