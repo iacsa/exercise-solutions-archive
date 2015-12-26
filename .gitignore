@@ -1,7 +1,3 @@
-*
-
-!.gitignore
-!README.md
-!LICENSE
-
-!*.rb
+# Only ruby scripts
+ruby/*
+!ruby/*.rb
