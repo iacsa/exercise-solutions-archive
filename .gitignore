@@ -8,10 +8,13 @@ Makefile
 *.hi
 
 # Ocaml build files
-ocaml/**/_build/*
+ocaml/*/_build
 *.mli
 
 # Rust files
 *.lock
 *.toml
-rust/**/target/**
+rust/*/target
+
+# Python caches
+python/*/__pycache__
