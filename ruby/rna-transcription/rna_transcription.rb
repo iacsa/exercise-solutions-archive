@@ -1,5 +1,5 @@
 class Complement
-  VERSION = 2
+  VERSION = 3
 
   def Complement.of_dna (rna)
     raise ArgumentError.new("Illegal RNA-string.") if not rna =~ /^[GCTA]*$/

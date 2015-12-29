@@ -1,4 +1,5 @@
 class School
+  VERSION = 1
   def initialize
     @students = Hash.new{|h, k| h[k] = []}
   end
@@ -6,7 +7,7 @@ class School
     @students[k] << v
     @students[k].sort!
   end
-  def to_hash
+  def to_h
     Hash[@students.sort]
   end
   def grade (k)

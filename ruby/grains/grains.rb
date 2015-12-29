@@ -1,8 +1,8 @@
 class Grains
-  def square (n)
-    2**(n-1)
+  def self.square(n)
+    2 ** (n - 1)
   end
-  def total
-    2**64 - 1
+  def self.total
+    square(65) - 1
   end
 end

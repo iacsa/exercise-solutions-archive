@@ -10,7 +10,7 @@ class Queens
       (0..7).map{|j|
         if @white == [i, j] then "W"
         elsif @black == [i, j] then "B"
-        else "O" end
+        else "_" end
       }.join(" ")
     }.join("\n")
   end

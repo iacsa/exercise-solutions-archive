@@ -1,7 +1,8 @@
-require 'date'
+require 'time'
 
 class Gigasecond
-  def Gigasecond.from (date)
-    date += (10**9 / 60 / 60 / 24)
+  VERSION = 1
+  def Gigasecond.from(date)
+    date + 10**9
   end
 end

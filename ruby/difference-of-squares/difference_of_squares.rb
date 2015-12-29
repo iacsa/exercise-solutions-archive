@@ -1,4 +1,5 @@
 class Squares
+  VERSION = 1
   def initialize (n)
     @n = n
   end
