@@ -1,12 +1,13 @@
 class Complement
   VERSION = 3
 
-  def Complement.of_dna (rna)
-    raise ArgumentError.new("Illegal RNA-string.") if not rna =~ /^[GCTA]*$/
-    rna.tr("GCTA", "CGAU")
-  end
-  def Complement.of_rna (dna)
-    raise ArgumentError.new("Illegal DNA-string.") if not dna =~ /^[CGAU]*$/
-    dna.tr("CGAU", "GCTA")
+  [
+    ["dna", "GCTA"],
+    ["rna", "CGAU"]
+  ].permutation do |from, to|
+    define_singleton_method("of_#{from[0]}") do |strand|
+      raise ArgumentError if not strand =~ /^[#{from[1]}]*$/
+      strand.tr(from[1], to[1])
+    end
   end
 end
