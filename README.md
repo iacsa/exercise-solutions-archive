@@ -1,2 +1,2 @@
-# codeeval
-My solutions for the problems on codeeval.com
+# CodeEval
+My solutions for the problems on CodeEval
