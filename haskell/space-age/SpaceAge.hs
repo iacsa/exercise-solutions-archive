@@ -9,7 +9,7 @@ data Planet = Mercury
             | Uranus
             | Neptune
 
-yearRelativeToEarth :: Planet -> Float
+yearRelativeToEarth :: Planet -> Double
 yearRelativeToEarth Earth   = 1.0
 yearRelativeToEarth Mercury = 0.2408467
 yearRelativeToEarth Venus   = 0.61519726
@@ -19,6 +19,6 @@ yearRelativeToEarth Saturn  = 29.447498
 yearRelativeToEarth Uranus  = 84.016846
 yearRelativeToEarth Neptune = 164.79132
 
-ageOn :: Planet -> Float -> Float
+ageOn :: Planet -> Double -> Double
 ageOn planet seconds = seconds / (secondsInYear * yearRelativeToEarth planet)
   where secondsInYear = 60 * 60 * 24 * 365.25
