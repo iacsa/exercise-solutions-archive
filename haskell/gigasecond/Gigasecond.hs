@@ -1,8 +1,5 @@
 module Gigasecond where
-import Data.Time.Calendar (addDays, Day)
+import Data.Time.Clock (UTCTime, addUTCTime)
 
-gigasecondInDays :: Integer
-gigasecondInDays = floor (1e9 / 60 / 60 / 24)
-
-fromDay :: Day -> Day
-fromDay = addDays gigasecondInDays
+fromDay :: UTCTime -> UTCTime
+fromDay = addUTCTime 1e9
