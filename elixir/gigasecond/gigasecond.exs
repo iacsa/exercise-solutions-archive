@@ -2,11 +2,12 @@ defmodule Gigasecond do
 	@doc """
 	Calculate a date one billion seconds after an input date.
 	"""
-	@spec from({pos_integer, pos_integer, pos_integer}) :: :calendar.date
+	@spec from(:calender.datetime) :: :calendar.datetime
 
-	def from({year, month, day}) do
-    :calendar.gregorian_days_to_date(trunc(
-      :calendar.date_to_gregorian_days({year, month, day}) +
-        (1000000000 / (60 * 60 * 24))))
+	def from(datetime) do
+    datetime
+      |> :calendar.datetime_to_gregorian_seconds
+      |> (&(&1 + 1_000_000_000)).()
+      |> :calendar.gregorian_seconds_to_datetime
 	end
 end
