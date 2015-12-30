@@ -1,19 +1,20 @@
 {-# OPTIONS_GHC -XTupleSections #-}
-module DNA where
+module DNA (count, nucleotideCounts) where
 import Data.Map (Map, fromListWith, findWithDefault)
 
 type Nucleotide = Char
 
-validate :: Nucleotide -> Nucleotide
-validate c
-  | elem c "ATCG" = c
-  | otherwise = error $ "invalid nucleotide '" ++ [c] ++ "'"
+nucleotides :: [Nucleotide]
+nucleotides = "ATCG"
+
+valid :: Nucleotide -> Bool
+valid c = elem c nucleotides || error ("invalid nucleotide '" ++ [c] ++ "'")
 
 count :: Nucleotide -> [Nucleotide] -> Integer
-count c ss = findWithDefault 0 (validate c) (nucleotideCounts ss)
+count c
+  | valid c = findWithDefault 0 c . nucleotideCounts
 
 nucleotideCounts :: [Nucleotide] -> Map Nucleotide Integer
-nucleotideCounts ss = fromListWith (+) (defaults ++ nucleos)
-  where
-    defaults = map (,0) "ATCG"
-    nucleos  = map ((,1) . validate) ss
+nucleotideCounts ss
+  | all valid ss = fromListWith (+) (defaults ++ map (, 1) ss)
+  where defaults = map (, 0) nucleotides
