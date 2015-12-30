@@ -26,8 +26,8 @@ defmodule DNA do
   iex> DNA.nucleotide_counts('AATAA')
   %{?A => 4, ?T => 1, ?C => 0, ?G => 0}
   """
-  @spec nucleotide_counts([char]) :: Dict.t
-  def nucleotide_counts(strand) do
+  @spec histogram([char]) :: Dict.t
+  def histogram(strand) do
     Enum.reduce(strand, %{?A => 0, ?C => 0, ?G => 0, ?T => 0}, &increment/2)
   end
   defp increment(char, dict) do
