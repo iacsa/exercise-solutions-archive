@@ -1,6 +1,5 @@
 class Robot
-  @@used_names = []
-  @@letters = ('A'..'Z').reduce(:+)
+  @@letters = ('A'..'Z').to_a
   def initialize
     reset
   end
@@ -8,12 +7,6 @@ class Robot
     @name
   end
   def reset
-    @@used_names
-    @name = [@@letters[rand(@@letters.size)],
-             @@letters[rand(@@letters.size)],
-             rand(10),
-             rand(10),
-             rand(10)].join while @@used_names.member?(@name)
-    @@used_names.push(@name)
+    @name = @@letters.sample(2).join + "%03d" % rand(1000)
   end
 end
