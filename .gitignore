@@ -1,7 +1,7 @@
 ### EXERCISM ###
 
 # Forbid files from exercism.io
-*.md
+exercism/**/*.md
 exercism/**/test.*
 exercism/**/*-test.*
 exercism/**/*_test.*
