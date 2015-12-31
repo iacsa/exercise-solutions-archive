@@ -2,6 +2,8 @@
 
 My implementations of small programming exercises, from various websites.
 
+
+
 ## [CodeEval](https://www.codeeval.com/)
 
 [My solutions](./codeeval)
@@ -17,6 +19,8 @@ My implementations of small programming exercises, from various websites.
 * No way to test solutions before a submit
 * At the time of writing, the scoring of solutions is __very__ slow
 
+
+
 ## [exercism.io](http://exercism.io/)
 
 [My solutions](./exercism)
@@ -29,3 +33,20 @@ My implementations of small programming exercises, from various websites.
   so you can work in your own programming environment
 
 ### Cons:
+
+
+
+## [HackerRank](https://www.hackerrank.com/)
+
+[My solutions](./hackerrank)
+
+### Pros:
+
+* Good selection of languages
+* Web-interface for submitting solutions
+* Simple test cases to validate solutions before submit
+* Regular rated contests
+
+### Cons:
+
+* Problem statements often not very clear
