@@ -13,14 +13,15 @@ class Garden
     'C' => :clover
   }
 
-  def initialize (garden, students = Students)
+  def initialize(garden, students = Students)
     @students = students.map(&:downcase).sort
-    @plants = garden.split.map do |row|
-      row.chars.each_slice(2).to_a
-    end.transpose.map(&:flatten).map do |parcel|
-      parcel.map do |cell|
-        Plants[cell]
-      end
+
+    row1, row2 = garden.split.map do |row|
+      row.chars.each_slice(2)
+    end
+
+    @plants = row1.zip(row2).map do |parcel|
+      parcel.flatten.map{|cell| Plants[cell] }
     end
   end
 
