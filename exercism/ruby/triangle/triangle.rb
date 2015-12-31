@@ -1,15 +1,22 @@
+class TriangleError < ArgumentError
+end
+
 class Triangle
-  def initialize (a, b, c)
-    @l = [a, b, c]
-    raise TriangleError if @l.map{|i| i <= 0}.any? or a + b + c <= 2 * @l.max
+  def initialize(a, b, c)
+    @sides = [a, b, c]
+    side_sum = @sides.reduce(:+)
+
+    unless @sides.all?{|l| l.positive? && l < side_sum - l }
+      raise TriangleError
+    end
   end
+
   def kind
-    case @l.uniq.size
+    case @sides.uniq.size
     when 1 then :equilateral
     when 2 then :isosceles
     when 3 then :scalene
     end
   end
 end
-class TriangleError < ArgumentError
-end
+
