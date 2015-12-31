@@ -1,32 +1,30 @@
 class Integer
   def palindrome?
-    to_s.reverse == to_s
+    as_string = self.to_s
+    as_string == as_string.reverse
   end
 end
+
 class Palindromes
-  def initialize (dict)
-    @min, @max = dict[:min_factor] || 1, dict[:max_factor]
+  def initialize(max_factor:, min_factor: 1)
+    @min, @max = min_factor, max_factor
   end
   def generate
-    @pals = (@min..@max).to_a.product((@min..@max).to_a).reduce({}){|d, v|
-      i, j = v
-      if i <= j and (i * j).palindrome?
-        d[i * j] = [] unless d[i * j]
-        d[i * j] << [i, j] 
-      end
-      d
-    }
+    @pals = (@min .. @max).to_a.repeated_combination(2)
+                          .select{|i, j| (i * j).palindrome? }
+                          .group_by{|i, j| i * j }
   end
   def largest
-    Palindrome.new(@pals.keys.max, @pals[@pals.keys.max])
+    Palindrome.new(*@pals.max_by{|k, _| k })
   end
   def smallest
-    Palindrome.new(@pals.keys.min, @pals[@pals.keys.min])
+    Palindrome.new(*@pals.min_by{|k, _| k })
   end
 end
+
 class Palindrome
   attr_reader :value, :factors
-  def initialize (v, fs)
+  def initialize(v, fs)
     @value = v
     @factors = fs
   end
