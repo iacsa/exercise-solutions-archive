@@ -1,6 +1,11 @@
+### EXERCISM ###
+
 # Forbid files from exercism.io
 *.md
-*test*
+exercism/**/test.*
+exercism/**/*-test.*
+exercism/**/*_test.*
+exercism/**/tests
 *.txt
 Makefile
 
@@ -18,3 +23,10 @@ Makefile
 
 # Python caches
 **__pycache__
+
+
+### CODEEVAL ###
+
+# only ruby scripts
+codeeval/ruby/*
+!codeeval/ruby/*.rb
