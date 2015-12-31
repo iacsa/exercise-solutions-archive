@@ -1,3 +1,3 @@
-# Only ruby scripts
-ruby/*
-!ruby/*.rb
+# CodeEval: only ruby scripts
+codeeval/ruby/*
+!codeeval/ruby/*.rb
