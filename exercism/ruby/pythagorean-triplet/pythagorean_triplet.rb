@@ -28,7 +28,7 @@ class Triplet
       min_over_k = min_factor.to_f / k
 
       m_min = Math.sqrt(min_over_k).ceil # a >= min_factor
-      m_max = Math.sqrt(max_over_k) # b <= max_factor
+      m_max = Math.sqrt(max_over_k).floor # b <= max_factor
 
       m_min.upto(m_max) do |m|
         m2 = m * m
@@ -37,7 +37,7 @@ class Triplet
         n_max = [
           Math.sqrt(m2 - min_over_k), # a >= min_factor
           Math.sqrt(max_over_k - m2) # c <= max_factor
-        ].min
+        ].min.floor
 
         n_min.upto(n_max) do |n|
           next unless RSA::Math.coprime?(m, n)
