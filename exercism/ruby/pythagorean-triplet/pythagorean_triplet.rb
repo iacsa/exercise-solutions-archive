@@ -16,10 +16,8 @@ class Triplet
     @a ** 2 + @b ** 2 == @c ** 2
   end
   
-  # Using Euclid's formula
+  # Using a variant of Euclid's formula
   def self.where(min_factor: 1, max_factor: 10, sum: nil)
-    one_plus_sqrt_two = 1 + Math.sqrt(2)
-
     (1 .. max_factor).each_with_object([]) do |k, triples|
 
       max_over_k = max_factor.to_f / k
@@ -31,14 +29,15 @@ class Triplet
       m_min.upto(m_max) do |m|
         m2 = m * m
 
-        n_min = (m / one_plus_sqrt_two).ceil # b >= a
+        n_min = (min_over_k / (2 *m)).ceil # b >= min_factor
         n_max = [
           Math.sqrt(m2 - min_over_k), # a >= min_factor
           Math.sqrt(max_over_k - m2) # c <= max_factor
         ].min.floor
 
         n_min.upto(n_max) do |n|
-          next if m.gcd(n) > 1 # m and n must be coprime
+          # m and n must be coprime and of different oddity
+          next if (m - n).even? ||  m.gcd(n) > 1
           n2 = n * n
 
           a = k * (m2 - n2)
