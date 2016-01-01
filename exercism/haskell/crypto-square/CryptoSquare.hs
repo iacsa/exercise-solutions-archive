@@ -14,7 +14,7 @@ normalizePlaintext :: String -> String
 normalizePlaintext = filter isAlphaNum . map toLower
 
 squareSize :: String -> Int
-squareSize str = head $ filter (\n -> n * n >= length str) [1 ..]
+squareSize = ceiling . sqrt . fromIntegral . length
 
 plaintextSegments :: String -> [String]
 plaintextSegments str = chunksOf (squareSize text) text
