@@ -7,7 +7,7 @@ module CryptoSquare (
 ) where
 
 import Data.Char (isAlphaNum, toLower)
-import Data.List (transpose, intercalate)
+import Data.List (transpose)
 import Data.List.Split (chunksOf)
 
 normalizePlaintext :: String -> String
@@ -24,4 +24,4 @@ ciphertext :: String -> String
 ciphertext = concat . transpose . plaintextSegments
 
 normalizeCiphertext :: String -> String
-normalizeCiphertext = intercalate " " . transpose . plaintextSegments
+normalizeCiphertext = unwords . transpose . plaintextSegments
