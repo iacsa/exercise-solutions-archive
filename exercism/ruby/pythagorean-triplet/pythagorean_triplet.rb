@@ -1,5 +1,3 @@
-require "rsa"
-
 class Triplet
 
   def initialize(a, b, c)
@@ -40,7 +38,7 @@ class Triplet
         ].min.floor
 
         n_min.upto(n_max) do |n|
-          next unless RSA::Math.coprime?(m, n)
+          next if m.gcd(n) > 1 # m and n must be coprime
           n2 = n * n
 
           a = k * (m2 - n2)
