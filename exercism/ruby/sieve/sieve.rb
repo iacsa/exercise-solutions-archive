@@ -1,12 +1,17 @@
 class Sieve
-  def initialize (n)
-    @sieve = Array.new(n - 1, true)
-    (2..n).each{|i|
-      l = i - 2
-      (@sieve[l += i] = false while l <= n) if @sieve[l]
-    }
-  end
-  def primes
-    @sieve.each_with_index.select{|p, i| p}.map{|p, i| i + 2}
+  attr_reader :primes
+
+  def initialize(limit)
+    sieve = Array.new(limit + 1, true)
+    @primes = []
+
+    2.upto(limit) do |candidate|
+      if sieve[candidate]
+        @primes << candidate
+        candidate.step(limit, candidate) do |multiple|
+          sieve[multiple] = false
+        end
+      end
+    end
   end
 end
