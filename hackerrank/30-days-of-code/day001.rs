@@ -1,4 +1,11 @@
 fn main() {
-  println!("Hello World.");
-  println!("Welcome to 30 Days of Code.");
+  println!("Primitive : Double");
+  println!("Primitive : Character");
+  println!("Primitive : Boolean");
+  println!("Primitive : Integer");
+  println!("Referenced : String");
+  println!("Primitive : Boolean");
+  println!("Primitive : Double");
+  println!("Primitive : Character");
+  println!("Referenced : String");
 }
