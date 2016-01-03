@@ -1,11 +1,11 @@
 fn main() {
-  println!("Primitive : Double");
-  println!("Primitive : Character");
-  println!("Primitive : Boolean");
-  println!("Primitive : Integer");
+  println!("Primitive : double");
+  println!("Primitive : char");
+  println!("Primitive : boolean");
+  println!("Primitive : int");
   println!("Referenced : String");
-  println!("Primitive : Boolean");
-  println!("Primitive : Double");
-  println!("Primitive : Character");
+  println!("Primitive : boolean");
+  println!("Primitive : double");
+  println!("Primitive : char");
   println!("Referenced : String");
 }
