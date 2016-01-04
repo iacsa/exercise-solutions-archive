@@ -1,10 +1,11 @@
 class SecretHandshake
+  attr_reader :commands
+
   Signs = ["wink", "double blink", "close your eyes", "jump"]
-  def initialize (n)
-    @n = n.to_i
-  end
-  def commands
-    s = Signs.each_with_index.select{|s, i| (@n / 2**i) % 2 > 0}.map(&:first)
-    (@n / 2**4) % 2 > 0 ? s.reverse : s
+
+  def initialize(n)
+    n = n.to_i
+    @commands = Signs.select.with_index{|s, i| (n >> i).odd? }
+    @commands.reverse! if (n >> 4).odd?
   end
 end
