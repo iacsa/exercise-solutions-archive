@@ -6,7 +6,7 @@ defmodule Frequency do
 
   The number of worker processes to use can be set with 'workers'.
   """
-  @spec frequency([String.t], pos_integer) :: Dict.t
+  @spec frequency([String.t], pos_integer) :: Map.t
   def frequency(texts, workers) do
     start_workers(texts, 0, workers)
   end
@@ -29,7 +29,7 @@ defmodule Frequency do
     if got < worker_count do
       receive do
         part ->
-          merged = Dict.merge(counts, part, fn(_, c1, c2) -> c1 + c2 end)
+          merged = Map.merge(counts, part, fn(_, c1, c2) -> c1 + c2 end)
           get_results(merged, got + 1, worker_count)
       end
     else
@@ -42,7 +42,7 @@ defmodule Frequency do
       text |> String.downcase
            |> String.split("")
            |> Stream.filter(&(String.match?(&1, ~r/\p{L}/u)))
-           |> Enum.reduce(acc, &(Dict.update(&2, &1, 1, fn(c) -> c+1 end)))
+           |> Enum.reduce(acc, &(Map.update(&2, &1, 1, fn(c) -> c+1 end)))
     end)
     send(handler, counts)
   end

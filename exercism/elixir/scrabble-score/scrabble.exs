@@ -14,7 +14,7 @@ defmodule Scrabble do
   def score(word) do
     word |> String.upcase
          |> String.to_char_list
-         |> Enum.map(& Dict.get(@values, &1, 0))
+         |> Enum.map(& Map.get(@values, &1, 0))
          |> Enum.sum
   end
 end

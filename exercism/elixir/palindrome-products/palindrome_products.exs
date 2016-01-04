@@ -15,7 +15,7 @@ defmodule Palindromes do
   end
 
   defp insert([a, b], dict) do
-    Dict.update(dict, a*b, [[a, b]], &([[a, b] | &1]))
+    Map.update(dict, a*b, [[a, b]], &([[a, b] | &1]))
   end
   defp is_palindrome?(number) do
     to_char_list(number) == Enum.reverse(to_char_list(number))

@@ -26,13 +26,13 @@ defmodule DNA do
   iex> DNA.nucleotide_counts('AATAA')
   %{?A => 4, ?T => 1, ?C => 0, ?G => 0}
   """
-  @spec histogram([char]) :: Dict.t
+  @spec histogram([char]) :: Map.t
   def histogram(strand) do
     Enum.reduce(strand, %{?A => 0, ?C => 0, ?G => 0, ?T => 0}, &increment/2)
   end
   defp increment(char, dict) do
     validate(char)
-    Dict.update(dict, char, 0, &(&1+1))
+    Map.update(dict, char, 0, &(&1+1))
   end
 
   defp validate(char) do

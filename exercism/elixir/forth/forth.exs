@@ -47,14 +47,14 @@ defmodule Forth do
     case token do
       {:int, v} -> %{ev | stack: [v | ev.stack]}
       {:call, op} -> call(op, ev)
-      {:def, [{:call, name} | opts]} -> %{ev | defs: Dict.put(ev.defs, name, opts)}
+      {:def, [{:call, name} | opts]} -> %{ev | defs: Map.put(ev.defs, name, opts)}
       _ -> raise InvalidWord, word: token
     end
   end
 
   @spec call(String.t, evaluator) :: evaluator
   def call(op, ev) do
-    case Dict.get(ev.defs, op, nil) do
+    case Map.get(ev.defs, op, nil) do
       nil -> %{ev | stack: primitive(op, ev.stack)}
       ops -> Enum.reduce(ops, ev, &execute/2)
     end

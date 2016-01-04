@@ -9,6 +9,6 @@ defmodule Words do
     sentence
       |> String.downcase
       |> String.split(~r/[^\p{L}\p{N}-]+/u, trim: true)
-      |> Enum.reduce(%{}, & Dict.put(&2, &1, (&2[&1] || 0) + 1))
+      |> Enum.reduce(%{}, & Map.put(&2, &1, (&2[&1] || 0) + 1))
   end
 end

@@ -17,6 +17,6 @@ defmodule SpaceAge do
   """
   @spec age_on(planet, pos_integer) :: float
   def age_on(planet, seconds) do
-    seconds / (365.25 * 24 * 60 * 60 * Dict.get(@factors, planet))
+    seconds / (365.25 * 24 * 60 * 60 * Map.get(@factors, planet))
   end
 end
