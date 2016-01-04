@@ -1,21 +1,33 @@
 class Queens
-  attr_reader :white, :black
-  def initialize (dict={})
-    @white = dict[:white] || [0, 3]
-    @black = dict[:black] || [7, 3]
-    raise ArgumentError if @white == @black
+
+  def initialize (white: [0, 3], black: [7, 3])
+    raise ArgumentError if white == black
+
+    @w_row, @w_file = white
+    @b_row, @b_file = black
   end
+
+  def white
+    [@w_row, @w_file]
+  end
+
+  def black
+    [@b_row, @b_file]
+  end
+
   def to_s
-    (0..7).map{|i|
-      (0..7).map{|j|
-        if @white == [i, j] then "W"
-        elsif @black == [i, j] then "B"
-        else "_" end
-      }.join(" ")
-    }.join("\n")
+    board = Array.new(8){ ["_"] * 8 }
+
+    board[@w_row][@w_file] = "W"
+    board[@b_row][@b_file] = "B"
+
+    board.map{|row| row.join(" ") }.join("\n")
   end
+
   def attack?
-    @white[0] == @black[0] or @white[1] == @black[1] or
-      (@white[0] - @black[0]).abs == (@white[1] - @black[1]).abs
+    delta_row = (@w_row - @b_row).abs
+    delta_file = (@w_file - @b_file).abs
+
+    delta_row.zero? || delta_file.zero? || delta_row == delta_file
   end
 end
