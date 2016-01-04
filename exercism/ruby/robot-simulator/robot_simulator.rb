@@ -1,22 +1,23 @@
 class Simulator
+
   Instructions = {
     "L" => :turn_left,
     "R" => :turn_right,
     "A" => :advance
   }
 
-  def instructions (code)
+  def instructions(code)
     code.chars.map do |c|
       Instructions[c]
     end
   end
 
-  def place (robot, opts)
-    robot.at(opts[:x], opts[:y])
-    robot.orient(opts[:direction])
+  def place(robot, x:, y:, direction:)
+    robot.at(x, y)
+    robot.orient(direction)
   end
 
-  def evaluate (robot, code)
+  def evaluate(robot, code)
     instructions(code).each do |instruction|
       robot.send(instruction)
     end
@@ -33,24 +34,25 @@ class Robot
     :south => [[ 0, -1], :west]
   }
 
-  def orient (direction)
-    if Directions[direction]
-      @bearing = direction
-    else
-      raise ArgumentError
-    end
+  def orient(bearing)
+    raise ArgumentError if Directions[bearing].nil?
+    @bearing = bearing
   end
+
   def turn_right
-    @bearing = Directions[@bearing][1]
+    @bearing = Directions[@bearing].last
   end
+
   def turn_left
     3.times do turn_right end
   end
-  def at (*coordinates)
+
+  def at(*coordinates)
     @coordinates = coordinates
   end
+
   def advance
-    dx = Directions[@bearing][0].dup
-    @coordinates.map!{|x| x + dx.shift}
+    dx = Directions[@bearing].first.dup
+    @coordinates.map!{|x| x + dx.shift }
   end
 end
