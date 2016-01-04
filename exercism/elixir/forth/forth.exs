@@ -48,7 +48,7 @@ defmodule Forth do
       {:int, v} -> %{ev | stack: [v | ev.stack]}
       {:call, op} -> call(op, ev)
       {:def, [{:call, name} | opts]} -> %{ev | defs: Map.put(ev.defs, name, opts)}
-      _ -> raise InvalidWord, word: token
+      _ -> raise InvalidWord, token
     end
   end
 
@@ -60,43 +60,25 @@ defmodule Forth do
     end
   end
 
+  @primitives ["+", "-", "*", "/", "dup", "drop", "swap", "over"]
+
   @spec primitive(String.t, List.t) :: List.t
   def primitive(op, stack) do
-    case op do
-      "+" -> case stack do
-        [x, y | zs] -> [y+x | zs]
-        _ -> raise StackUnderflow
+    case {op, stack} do
+      {"+", [x, y | zs]} -> [y + x | zs]
+      {"-", [x, y | zs]} -> [y - x | zs]
+      {"*", [x, y | zs]} -> [y * x | zs]
+      {"/", [x, _ | _]} when x == 0 -> raise DivisionByZero
+      {"/", [x, y | zs]} -> [div(y, x) | zs]
+      {"dup", [x | zs]} -> [x, x | zs]
+      {"drop", [_ | zs]} -> zs
+      {"swap", [x, y | zs]} -> [y, x | zs]
+      {"over", [x, y | zs]} -> [y, x, y | zs]
+      _ -> if Enum.member?(@primitives, op) do
+        raise StackUnderflow
+      else
+        raise UnknownWord, op
       end
-      "-" -> case stack do
-        [x, y | zs] -> [y-x | zs]
-        _ -> raise StackUnderflow
-      end
-      "*" -> case stack do
-        [x, y | zs] -> [y*x | zs]
-        _ -> raise StackUnderflow
-      end
-      "/" -> case stack do
-        [x, _ | _] when x == 0 -> raise DivisionByZero
-        [x, y | zs] -> [div(y, x) | zs]
-        _ -> raise StackUnderflow
-      end
-      "dup" -> case stack do
-        [x | zs] -> [x, x | zs]
-        _ -> raise StackUnderflow
-      end
-      "drop" -> case stack do
-        [_ | zs] -> zs
-        _ -> raise StackUnderflow
-      end
-      "swap" -> case stack do
-        [x, y | zs] -> [y, x | zs]
-        _ -> raise StackUnderflow
-      end
-      "over" -> case stack do
-        [x, y | zs] -> [y, x, y | zs]
-        _ -> raise StackUnderflow
-      end
-      _ -> raise UnknownWord, word: op
     end
   end
 
