@@ -9,14 +9,17 @@ class Allergies
     "tomatoes",
     "chocolate",
     "pollen",
-    "cats"
+    "cats",
   ]
 
-  def initialize (score)
-    @lookup = Hash[*Allergens.zip(score.to_s(2).reverse.chars).flatten]
-    @list = Allergens.select{|allergen| allergic_to?(allergen)}
+  def initialize(score)
+    scores = score.to_s(2).reverse
+    @list = Allergens.select.with_index do |allergen, idx|
+      scores[idx] == "1"
+    end
   end
-  def allergic_to? (allergen)
-    @lookup[allergen] == "1"
+
+  def allergic_to?(allergen)
+    @list.include?(allergen)
   end
 end
