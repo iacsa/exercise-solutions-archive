@@ -2,13 +2,11 @@
 
 ; Memoize away!
 (define (memoize f)
-  (let ((results (make-hash)))
+  (let ([results (make-hash)])
     (λ args (hash-ref! results args (thunk (apply f args))))))
 
-(define-syntax define-memoized
-  (syntax-rules ()
-    [(_ (name . args) . body)
-     (define name (memoize (lambda args . body)))]))
+(define-syntax-rule (define-memoized (name . args) . body)
+  (define name (memoize (lambda args . body))))
 
 (define-memoized (fib n)
   (if (< n 2)

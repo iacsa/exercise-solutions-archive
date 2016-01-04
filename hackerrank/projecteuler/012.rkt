@@ -5,13 +5,11 @@
 
 ; Memoization is important here, otherwise we'll hit the 10s limit!
 (define (memoize f)
-  (let ((results (make-hash)))
+  (let ([results (make-hash)])
     (λ args (hash-ref! results args (thunk (apply f args))))))
 
-(define-syntax define-memoized
-  (syntax-rules ()
-    [(_ (name . args) . body)
-     (define name (memoize (lambda args . body)))]))
+(define-syntax-rule (define-memoized (name . args) . body)
+  (define name (memoize (lambda args . body))))
 
 (define-memoized (divisors-of-nth-triangle-number n)
   (length (divisors (triangle-number n))))
