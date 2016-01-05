@@ -1,8 +1,13 @@
 #lang racket
 
-(provide accumulate)
+(provide
+  (contract-out
+    [accumulate (-> list? (-> any/c any/c) list?)]))
+
 
 (define (accumulate xs f)
-  (match xs
-    [(cons hd tl) (cons (f hd) (accumulate tl f))]
-    [_ null]))
+  (define (aux xs acc)
+    (match xs
+      [(cons hd tl) (aux tl (cons (f hd) acc))]
+      [_ (reverse acc)]))
+  (aux xs null))
