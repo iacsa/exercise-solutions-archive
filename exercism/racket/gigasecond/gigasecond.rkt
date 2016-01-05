@@ -1,8 +1,13 @@
 #lang racket
 
-(provide add-gigasecond)
+(require (only-in racket/date
+                  date->seconds))
 
-(require racket/date)
+
+(provide
+  (contract-out
+    [add-gigasecond (-> date? date?)]))
+
 
 (define (add-gigasecond date)
   (seconds->date (+ (date->seconds date) (expt 10 9))))
