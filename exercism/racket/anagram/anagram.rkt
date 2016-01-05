@@ -1,6 +1,9 @@
 #lang racket
 
-(provide anagrams-for)
+(provide
+  (contract-out
+    [anagrams-for (-> string? (listof string?) (listof string?))]))
+
 
 (define (anagrams-for w ss)
   (filter (curry anagram? w) ss))
