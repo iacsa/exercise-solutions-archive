@@ -1,37 +1,44 @@
 pub type Domino = (usize, usize);
 
-pub fn chain (input: &[Domino]) -> Option<Vec<Domino>> {
-  let mut rest = input.to_vec();
-  // As the chain must be circular, the first domino can be any one
-  rest.pop().map(|(d1, d2)| {
-    continue_chain(rest, d2, d1).map(|mut domino_chain| {
-      domino_chain.insert(0, (d1, d2)); domino_chain
-    })
-  }).unwrap_or(Some(vec![]))
+pub fn chain(dominoes: &[Domino]) -> Option<Vec<Domino>> {
+
+  // An empty chain is a correct result
+  if dominoes.len() == 0 { return Some(vec![]) }
+
+  // Make mutable copy for `continue_chain` to modify
+  let mut dominoes = dominoes.to_vec();
+
+  // The chain must be circular, so it can start with any domino
+  // Choose the first and keep it fixed
+  let d = dominoes[0];
+  if continue_chain(&mut dominoes[1 .. ], d.1, d.0) {
+    Some(dominoes)
+  } else {
+    None
+  }
 }
 
-fn continue_chain (input: Vec<Domino>,
-                   start_with: usize,
-                   end_with: usize) -> Option<Vec<Domino>> {
+fn continue_chain(dominoes: &mut[Domino], start_with: usize, end_with: usize) -> bool {
 
-  if input.len() == 0 && start_with == end_with { return Some(vec![]) }
+  // If the chain is closed, report success
+  if dominoes.len() == 0 && start_with == end_with { return true }
 
-  // Just try out every domino, until we find one that fits and
-  // has a further continuation
-  for (i, &(d1, d2)) in input.iter().enumerate() {
-    // Check whether domino fits, needs to be turned, or does not fit
-    let (e1, e2) = if d1 == start_with { (d1, d2) } else if d2 == start_with { (d2, d1) } else { continue };
+  // Try out every domino, until we find one that fits and has a further continuation
+  for i in 0 .. dominoes.len() {
 
-    // Check what dominoes are left
-    let mut rest = input.to_vec(); rest.swap_remove(i);
+    // Bring domino to the front
+    dominoes.swap(0, i);
 
-    // Search for a further continuation of the chain
-    if let Some(mut domino_chain) = continue_chain(rest, e2, end_with) {
-      domino_chain.insert(0, (e1, e2));
-      return Some(domino_chain)
+    // Turn the domino if it helps
+    if dominoes[0].1 == start_with { dominoes[0] = (dominoes[0].1, dominoes[0].0); }
+
+    // If the domino fits, recursively continue the chain
+    let d = dominoes[0];
+    if d.0 == start_with && continue_chain(&mut dominoes[1 .. ], d.1, end_with) {
+      return true
     }
   }
 
-  // If no domino was able to complete the chain, we need to backtrack
-  None
+  // Backtrack if no domino was able to complete the chain
+  false
 }
