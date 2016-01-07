@@ -37,6 +37,9 @@ fn continue_chain(dominoes: &mut[Domino], start_with: usize, end_with: usize) ->
     if d.0 == start_with && continue_chain(&mut dominoes[1 .. ], d.1, end_with) {
       return true
     }
+
+    // Put domino back where it was
+    dominoes.swap(0, i);
   }
 
   // Backtrack if no domino was able to complete the chain
