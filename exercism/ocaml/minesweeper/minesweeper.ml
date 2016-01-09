@@ -20,10 +20,8 @@ let annotate (board: string list) : string list =
   and cs = counts board
   in
   List.mapi board ~f:(fun y row ->
-    row |> String.to_list
-        |> List.mapi ~f:(fun x c ->
-            match c, Int.Map.find cs (x * (h + 2) + y) with
-            | '*', _ -> '*'
-            | _, None -> ' '
-            | _, Some(n) -> (Int.to_string n).[0])
-        |> String.of_char_list)
+    String.mapi row ~f:(fun x c ->
+      match c, Int.Map.find cs (x * (h + 2) + y) with
+      | '*', _ -> '*'
+      | _, None -> ' '
+      | _, Some(n) -> (Int.to_string n).[0]))

@@ -1,8 +1,7 @@
 open Core.Std
 
 let addends (number: string) : int list =
-  number |> String.to_list
-         |> List.rev
+  number |> String.to_list_rev
          |> List.map ~f:(fun d -> Char.to_int d - Char.to_int '0')
          |> List.mapi ~f:(fun i n -> (1 + i mod 2) * n)
          |> List.map ~f:(fun n -> n - 9 * (n / 10))

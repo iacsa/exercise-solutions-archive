@@ -6,9 +6,7 @@ let increment_map map key =
 
 let to_words text =
   text |> String.lowercase
-       |> String.to_list
-       |> List.map ~f:(function c when Char.is_alphanum c -> c | _ -> ' ')
-       |> String.of_char_list
+       |> String.map ~f:(function c when Char.is_alphanum c -> c | _ -> ' ')
        |> String.split ~on:' '
        |> List.filter ~f:(fun s -> not (String.is_empty s))
 

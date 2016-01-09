@@ -1,10 +1,9 @@
 open Core.Std
 
+
 (** Extract the digits from a valid phone number. *)
 let number (str: string) : string option =
-  let clean = str |> String.to_list
-                  |> List.filter ~f:Char.is_digit
-                  |> String.of_char_list
+  let clean = String.filter str ~f:Char.is_digit
   in
   match String.length clean with
   | 10 -> Some clean
@@ -14,7 +13,6 @@ let number (str: string) : string option =
 (** Extract the area code from a valid phone number. *)
 let area_code (str: string) : string option =
   Option.map (number str) ~f:(fun n -> String.slice n 0 3)
-
 
 (** Pretty print a valid phone number. *)
 let pretty (str: string) : string option =

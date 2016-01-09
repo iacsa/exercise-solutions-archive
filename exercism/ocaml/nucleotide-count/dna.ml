@@ -8,5 +8,4 @@ let increment_map (map: int Char.Map.t) (key: char) : int Char.Map.t =
   Char.Map.change map key (fun x -> Some (Option.value x ~default:0 + 1))
 
 let nucleotide_counts (dna: string) : int Char.Map.t =
-  dna |> String.to_list
-      |> List.fold ~init:Char.Map.empty ~f:increment_map
+  String.fold dna ~init:Char.Map.empty ~f:increment_map
