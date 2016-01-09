@@ -18,6 +18,7 @@ My implementations of small programming exercises, from various websites.
 * Selection of languages is lacking
 * No way to test solutions before a submit
 * At the time of writing, the scoring of solutions is __very__ slow
+* (Almost?) No social component
 
 
 
@@ -34,6 +35,7 @@ My implementations of small programming exercises, from various websites.
 
 ### Cons:
 
+* Depending on the language, potentially small number of problems
 
 
 ## [HackerRank](https://www.hackerrank.com/)
@@ -50,3 +52,4 @@ My implementations of small programming exercises, from various websites.
 ### Cons:
 
 * Problem statements often not very clear
+* Given examples / test cases often trivial

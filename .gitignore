@@ -13,7 +13,7 @@ Makefile
 *.hi
 
 # Ocaml build files
-**ocaml/*/_build
+exercism/ocaml/**/_build
 *.mli
 
 # Rust files
