@@ -1,6 +1,11 @@
 #lang racket
 
-(provide numbers area-code pprint)
+(provide
+  (contract-out
+    [numbers (-> string? string?)]
+    [area-code (-> string? string?)]
+    [pprint (-> string? string?)]))
+
 
 (define (numbers num)
   (let* ([num (list->string (filter char-numeric? (string->list num)))]
