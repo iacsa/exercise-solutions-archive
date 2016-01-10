@@ -1,19 +1,20 @@
 #lang racket
 
-(provide convert)
+(require math/number-theory)
+
+(provide
+  (contract-out
+    [convert (-> natural-number/c string?)]))
+
 
 (define (convert n)
   (match (sounds n)
     ["" (number->string n)]
-    [(var sounds) sounds]))
-
-(define (divides? p n)
-  (zero? (modulo n p)))
+    [sounds sounds]))
 
 (define (sounds n)
-  (for/fold ([acc ""])
-            ([factor (in-list '(3 5 7))]
-             [sound (in-list '("Pling" "Plang" "Plong"))])
-    (if (divides? factor n)
-      (string-append acc sound)
-      acc)))
+  (string-append*
+    (for/list ([factor (in-list '(3 5 7))]
+               [sound (in-list '("Pling" "Plang" "Plong"))]
+               #:when (divides? factor n))
+      sound)))
