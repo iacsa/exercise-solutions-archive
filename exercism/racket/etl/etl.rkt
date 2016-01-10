@@ -2,16 +2,12 @@
 
 (provide
   (contract-out
-    [etl (-> (and/c hash? natural-keys?)
-             hash?)]))
+    [etl (-> (hash/c natural-number/c (listof string?))
+             (hash/c string? natural-number/c))]))
 
-(define (natural-keys? data)
-  (for/and ([key (in-hash-keys data)])
-    (exact-positive-integer? key)))
 
 (define (etl data)
-  (make-hash
-    (for*/list
-      ([(value letters) (in-hash data)]
-       [letter letters])
-      (cons (string-downcase letter) value))))
+  (for*/hash
+    ([(value letters) (in-hash data)]
+     [letter (in-list letters)])
+    (values (string-downcase letter) value)))
