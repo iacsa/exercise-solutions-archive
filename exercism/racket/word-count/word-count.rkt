@@ -1,8 +1,10 @@
 #lang racket
 
-(provide word-count)
+(provide
+  (contract-out
+    [word-count (-> string? (hash/c string? natural-number/c))]))
 
 (define (word-count text)
   (for/fold ([acc (hash)])
             ([word (in-list (string-split text))])
-    (hash-set acc word (add1 (hash-ref acc word 0)))))
+    (hash-update acc word add1 0)))
