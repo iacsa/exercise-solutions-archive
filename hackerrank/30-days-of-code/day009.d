@@ -1,6 +1,5 @@
 import std.conv: to;
-import std.stdio: readln, lines, stdin, writefln, writeln;
-import std.string: strip;
+import std.stdio: readln, writeln;
 import std.array: split;
 
 int gcd(int a, int b) {
@@ -15,5 +14,5 @@ void main(string[] args) {
 
   auto line = readln().split;
 
-  writefln("%d", gcd(line[0].to!int, line[1].to!int));
+  writeln(gcd(line[0].to!int, line[1].to!int));
 }
