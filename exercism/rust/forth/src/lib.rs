@@ -1,15 +1,20 @@
-extern crate regex;
-
 use std::collections::HashMap;
-use regex::Regex;
 
-pub type Value = i32;
+pub type ValueType = i64;
 pub type ForthResult = Result<(), Error>;
-type ApplyResult = Result<Vec<isize>, Error>;
+type ApplyResult = Result<Vec<ValueType>, Error>;
+
+#[derive(Clone)]
+enum Token {
+  Value(ValueType),
+  Call(String),
+  Def(Vec<Token>),
+  EndDef,
+}
 
 pub struct Forth {
-  stack: Vec<isize>,
-  custom_ops: HashMap<String, String>
+  stack: Vec<ValueType>,
+  custom_ops: HashMap<String, Vec<Token>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -20,41 +25,75 @@ pub enum Error {
   InvalidWord,
 }
 
-// let valid_definition = Regex::new(r"^: ([^:;0-9][^:;]*?) ([^:;]+) ;(.*)$").unwrap();
-
 impl Forth {
-  pub fn new () -> Self {
+  pub fn new() -> Self {
     Forth{ stack: vec![], custom_ops: HashMap::new() }
   }
 
-  pub fn format_stack (&self) -> String {
-    self.stack.iter().map(|e| format!("{} ", e)).collect::<String>().trim().to_string()
+  pub fn format_stack(&self) -> String {
+    self.stack.iter().map(|e| e.to_string()).collect::<Vec<_>>().join(" ")
   }
 
-  // Some helper functions to make evaluating operators easier
-  fn apply_1<F> (&mut self, f: F) -> ForthResult where F: Fn (isize) -> ApplyResult {
-    if self.stack.len() < 1 { return Err(Error::StackUnderflow) }
-    let x = self.stack.pop().unwrap();
-    self.process_apply_result(f(x))
-  }
-  fn apply_2<F> (&mut self, f: F) -> ForthResult where F: Fn (isize, isize) -> ApplyResult {
-    if self.stack.len() < 2 { return Err(Error::StackUnderflow) }
-    let (y, x) = (self.stack.pop().unwrap(), self.stack.pop().unwrap());
-    self.process_apply_result(f(x, y))
-  }
-  fn process_apply_result (&mut self, res: ApplyResult) -> ForthResult {
-    res.map(|mut results| { self.stack.append(&mut results); })
+  pub fn eval(&mut self, input: &str) -> ForthResult {
+    let input = input.to_lowercase();
+    let mut words = input.split(|c: char| c.is_whitespace() || c.is_control());
+    let tokens = self.parse(&mut words, vec![]);
+
+    self.execute_all(tokens)
   }
 
-  fn reduce_with (&mut self, input: &str) -> ForthResult {
-    // First, check if "input" was defined by the user
-    if self.custom_ops.contains_key(input) {
-      let definition = self.custom_ops.get(input).unwrap().to_string();
-      return self.eval(&definition)
+  fn parse(&self, words: &mut Iterator<Item=&str>, mut tokens: Vec<Token>) -> Vec<Token> {
+    match words.next() {
+      Some(":") => {
+        tokens.push(Token::Def(self.parse(words, vec![])));
+        self.parse(words, tokens)
+      },
+      Some(";") => {
+        tokens.push(Token::EndDef);
+        tokens
+      },
+      Some(x) => {
+        tokens.push(self.atom(x));
+        self.parse(words, tokens)
+      },
+      None => tokens
     }
+  }
 
-    // If not, match it against the built-ins
-    match input {
+  fn atom(&self, word: &str) -> Token {
+    match word.parse() {
+      Ok(v) => Token::Value(v),
+      Err(_) => Token::Call(word.to_string())
+    }
+  }
+
+  fn execute_all(&mut self, tokens: Vec<Token>) -> ForthResult {
+    for token in tokens {
+      try!(self.execute(token));
+    }
+    Ok(())
+  }
+
+  fn execute(&mut self, token: Token) -> ForthResult {
+    match token {
+      Token::EndDef => Err(Error::InvalidWord),
+      Token::Value(v) => self.push(v),
+      Token::Call(op) => self.call(op),
+      Token::Def(def) => self.add_definition(&def[..])
+    }
+  }
+
+  fn call(&mut self, name: String) -> ForthResult {
+    if self.custom_ops.contains_key(&name) {
+      let tokens = self.custom_ops.get(&name).unwrap().clone();
+      self.execute_all(tokens)
+    } else {
+      self.primitive(name)
+    }
+  }
+
+  fn primitive(&mut self, input: String) -> ForthResult {
+    match &input[..] {
       "+" => self.apply_2(|x, y| Ok(vec![x + y])),
       "-" => self.apply_2(|x, y| Ok(vec![x - y])),
       "*" => self.apply_2(|x, y| Ok(vec![x * y])),
@@ -67,37 +106,38 @@ impl Forth {
     }
   }
 
-  pub fn eval (&mut self, input: &str) -> ForthResult {
-    let input = input.trim().to_lowercase();
-    if input.len() == 0 { return Ok (()) }
-
-    // Evaluating is a recursive process.
-    // From the input we extract the first expression and evaluate it,
-    // then we simply call eval on the rest of the input.
-    // An expression can be either:
-    // 1. An operator definition
-    // 2. A number
-    // 3. An operator call
-    
-    // Try to define an operator
-    if input.starts_with(":") {
-      let valid_definition = Regex::new(r"^: ([^:;0-9][^:;]*?) ([^:;]+) ;(.*)$").unwrap();
-      if !valid_definition.is_match(&input) { return Err(Error::InvalidWord) }
-      let captures = valid_definition.captures_iter(&input).next().unwrap();
-      let (name, definition, rest) = (captures.at(1).unwrap(), captures.at(2).unwrap(), captures.at(3).unwrap());
-      self.custom_ops.insert(name.to_string(), definition.to_string());
-      return self.eval(rest)
+  fn add_definition(&mut self, def: &[Token]) -> ForthResult {
+    match (def.first(), def.last()) {
+      // A definition must start with the name to define, and end with an EndDef token
+      (Some(&Token::Call(ref name)), Some(&Token::EndDef)) => {
+        self.custom_ops.insert(name.to_string(), def[1 .. def.len() - 1].to_vec());
+        Ok(())
+      },
+      _ => Err(Error::InvalidWord)
     }
+  }
 
-    let rex = Regex::new(r"^([^\s[:cntrl:]]+)[\s[:cntrl:]]*(?s)(.*)").unwrap();
-    let captures = rex.captures_iter(&input).next().unwrap();
-    let (first, rest) = (captures.at(1).unwrap(), captures.at(2).unwrap());
+  // Some shorthands
+  fn push(&mut self, v: ValueType) -> ForthResult {
+    self.stack.push(v);
+    Ok(())
+  }
+  fn pop(&mut self) -> ValueType {
+    self.stack.pop().unwrap()
+  }
 
-    if let Ok(number) = first.parse() {
-      self.stack.push(number);
-    } else {
-      if let Err(err) = self.reduce_with(first) { return Err(err) }
-    }
-    return self.eval(rest)
+  // Some helper functions to make evaluating operators easier
+  fn apply_1<F> (&mut self, f: F) -> ForthResult where F: Fn (ValueType) -> ApplyResult {
+    if self.stack.len() < 1 { return Err(Error::StackUnderflow) }
+    let x = self.pop();
+    self.process_apply_result(f(x))
+  }
+  fn apply_2<F> (&mut self, f: F) -> ForthResult where F: Fn (ValueType, ValueType) -> ApplyResult {
+    if self.stack.len() < 2 { return Err(Error::StackUnderflow) }
+    let (y, x) = (self.pop(), self.pop());
+    self.process_apply_result(f(x, y))
+  }
+  fn process_apply_result (&mut self, res: ApplyResult) -> ForthResult {
+    res.map(|mut results| self.stack.append(&mut results))
   }
 }
