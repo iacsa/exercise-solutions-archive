@@ -3,7 +3,7 @@ module Beer (sing, verse) where
 import Data.Char (toUpper)
 
 sing :: Int -> Int -> String
-sing upper lower = unlines $ reverse $ map verse [lower .. upper]
+sing upper lower = unlines $ map verse $ reverse [lower .. upper]
 
 verse :: Int -> String
 verse n = unlines [
