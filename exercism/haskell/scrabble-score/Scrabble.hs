@@ -11,7 +11,7 @@ scoreLetter letter
   | elem c "K" = 5
   | elem c "JX" = 8
   | elem c "QZ" = 10
-  | otherwise = error "ups"
+  | otherwise = error $ "illegal character in scrabble word: " ++ [letter]
   where c = toUpper letter
 
 scoreWord :: [Char] -> Int
