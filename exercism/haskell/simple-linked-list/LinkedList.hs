@@ -38,5 +38,5 @@ fromList = foldr Cons Nil
 reverseLinkedList :: List e -> List e
 reverseLinkedList ls = rll ls Nil
   where
-    rll Nil acc = acc
-    rll (Cons n ls) acc = rll ls (Cons n acc)
+    rll Nil = id
+    rll (Cons n ls) = rll ls . Cons n
