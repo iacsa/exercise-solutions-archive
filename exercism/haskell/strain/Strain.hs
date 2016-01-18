@@ -1,4 +1,4 @@
-module Strain where
+module Strain (keep, discard) where
 
 keep :: (a -> Bool) -> [a] -> [a]
 keep _ [] = []
