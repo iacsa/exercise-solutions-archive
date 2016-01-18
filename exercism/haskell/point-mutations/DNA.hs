@@ -1,4 +1,4 @@
-module DNA where
+module DNA (hammingDistance) where
 
 hammingDistance :: String -> String -> Int
 hammingDistance as bs = countTrue charsDiffer
