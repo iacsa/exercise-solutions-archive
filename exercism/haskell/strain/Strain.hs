@@ -2,7 +2,7 @@ module Strain (keep, discard) where
 
 keep :: (a -> Bool) -> [a] -> [a]
 keep _ [] = []
-keep p (x:xs)
+keep p (x : xs)
   | p x = x : rest
   | otherwise = rest
   where rest = keep p xs
