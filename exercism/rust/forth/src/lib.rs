@@ -36,7 +36,8 @@ impl Forth {
 
   pub fn eval(&mut self, input: &str) -> ForthResult {
     let input = input.to_lowercase();
-    let mut words = input.split(|c: char| c.is_whitespace() || c.is_control());
+    let mut words = input.split(|c: char| c.is_whitespace() || c.is_control())
+                         .filter(|&word| word.len() > 0);
     let tokens = self.parse(&mut words, vec![]);
 
     self.execute_all(tokens)
