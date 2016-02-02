@@ -13,11 +13,11 @@ defmodule Raindrops do
   @sounds [{3, "Pling"}, {5, "Plang"}, {7, "Plong"}]
 
   def convert(number) do
-    sounds = Enum.filter(@sounds, fn({p,_}) -> rem(number, p) == 0 end)
+    sounds = Enum.filter(@sounds, &rem(number, elem(&1, 0)) == 0)
     if Enum.empty?(sounds) do
       Integer.to_string(number)
     else
-      Enum.reduce(sounds, "", fn({_,s}, acc) -> acc <> s end)
+      sounds |> Enum.map(&elem(&1, 1)) |> Enum.join
     end
   end
 end
