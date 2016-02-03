@@ -28,5 +28,5 @@ fn is_horizontal (board: &[&str], x: usize, y: usize) -> bool {
   is_corner(board, x, y) || is_str(board, x, y, "-")
 }
 fn is_str (board: &[&str], x: usize, y: usize, s: &str) -> bool {
-  board.get(y).unwrap()[x .. x + 1].starts_with(s)
+  &board[y][x .. x + 1] == s
 }
