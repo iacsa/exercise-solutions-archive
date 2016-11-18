@@ -4,9 +4,6 @@ end
 
 class Pangram
   def self.is_pangram?(string)
-    string = string.downcase
-    ('a' .. 'z').map do |c|
-      string.include?(c)
-    end.all?
+    ('a' .. 'z').all?(&(string.downcase.method("include?")))
   end
 end

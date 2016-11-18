@@ -5,87 +5,67 @@ end
 class Game
 
   def initialize
-    @state = :first
-    @last = 0
+    @half_frames_completed = 0
     @score = 0
-    @count = 0
+    @spare_bonus = 0
+    @strike_bonus_1 = 0
+    @strike_bonus_2 = 0
+    @strike_count = 0
+    @strike_bonus = 0
+    @bonus_rolls = 0
   end
 
   def score
-    raise StandardError unless @state == :finished
-    @score
+    @finished and @score or raise StandardError
   end
 
   def roll(pins)
+    # Set up new pins each frame
+    @pins_remaining = 10 if @half_frames_completed.even?
+
+    # Deny further rolls if game is completed
+    raise StandardError if @finished
+
+    # Make sure `pins` only holds legal values
     raise StandardError unless pins.integer?
-    raise StandardError unless (0 .. 10).include?(pins)
+    raise StandardError unless (0 .. @pins_remaining).include?(pins)
 
-    @score += pins
-    @count += 1
+    @pins_remaining -= pins
 
-    case @state
-    when :first
-      @state = :second
-      if pins == 10
-        @state = :strike_first
-        @count += 1
-      end
-    when :second
-      raise StandardError if pins + @last > 10
-      @state = :first
-      if pins + @last == 10
-        @state = :spare
-      end
-    when :spare
-      @score += pins
-      @state = :second
-    when :strike_first
-      @score += pins
-      @state = :strike_second
-      if pins == 10
-        @count += 1
-        @state = :strike_double
-      end
-    when :strike_second
-      raise StandardError if pins + @last > 10
-      @score += pins
-      @state = :first
-      if pins + @last == 10
-        @state = :spare
-      end
-    when :strike_double
-      @score += 2 * pins
-      @state = :strike_second
-      if pins == 10
-        @count += 1
-        @state = :strike_double
-      end
-    when :spare_bonus
-      @state = :finished
-    when :strike_bonus_1
-      @state = :strike_bonus_2
-    when :strike_bonus_2
-      raise StandardError if @last < 10 && pins + @last > 10
-      @state = :finished
-    when :strike_bonus_strike
-      @score += pins
-      @state = :strike_bonus_2
-    when :finished
-      raise StandardError
+    # Hitting all pins with the first roll of a frame is a strike
+    strike = @pins_remaining.zero? && @half_frames_completed.even?
+
+    # Hitting the remaining pins with the second roll is a spare
+    spare = !strike && @pins_remaining.zero?
+
+    # A strike completes a full frame, every other roll is only a half
+    @half_frames_completed += strike ? 2 : 1
+
+    # Whether rolling a spare or a strike gives the regular bonus
+    regular = @half_frames_completed < 20
+
+    # Score increases for every spare and strike scored in the last two rolls
+    @score += pins * (1 + @spare_bonus + @strike_bonus_1 + @strike_bonus_2)
+
+    # Carry over strike bonus from last the frame
+    @strike_bonus_1 = @strike_bonus_2
+
+    # Mark bonus for two frames if a strike was rolled
+    @strike_bonus_2 = strike && regular ? 1 : 0
+
+    # Mark bonus if a spare was rolled
+    @spare_bonus = spare && regular ? 1 : 0
+
+    # Grant bonus rolls for a strike or spare in the last frame
+    if @half_frames_completed == 20
+      @bonus_rolls = 2 if strike
+      @bonus_rolls = 1 if spare
     end
 
-    if @count == 20
-      if @state == :spare
-        @state = :spare_bonus
-      elsif @state == :strike_first
-        @state = :strike_bonus_1
-      elsif @state == :strike_double
-        @state = :strike_bonus_strike
-      else
-        @state = :finished
-      end
+    # End the game when all rolls are used up
+    if !regular
+      @finished = @bonus_rolls == 0
+      @bonus_rolls -= 1
     end
-
-    @last = pins
   end
 end
