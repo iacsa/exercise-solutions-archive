@@ -10,8 +10,6 @@ class Game
     @spare_bonus = 0
     @strike_bonus_1 = 0
     @strike_bonus_2 = 0
-    @strike_count = 0
-    @strike_bonus = 0
     @bonus_rolls = 0
   end
 
