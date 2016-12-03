@@ -1,11 +1,13 @@
 ### EXERCISM ###
 
 # Forbid files from exercism.io
+.version
 exercism/**/*.md
 exercism/**/test.*
 exercism/**/*-test.*
 exercism/**/*_test.*
 exercism/**/tests
+exercism/**/.gitignore
 *.txt
 Makefile
 
