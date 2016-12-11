@@ -8,6 +8,7 @@ exercism/**/*-test.*
 exercism/**/*_test.*
 exercism/**/tests
 exercism/**/.gitignore
+exercism/crystal/**/spec
 *.txt
 Makefile
 
