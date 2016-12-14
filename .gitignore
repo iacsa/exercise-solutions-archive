@@ -6,11 +6,18 @@ exercism/**/*.md
 exercism/**/test.*
 exercism/**/*-test.*
 exercism/**/*_test.*
+exercism/**/test
 exercism/**/tests
 exercism/**/.gitignore
 exercism/crystal/**/spec
 *.txt
 Makefile
+
+# Kotlin / Gradle files
+exercism/kotlin/*/build
+.gradle
+build.gradle
+.keep
 
 # Haskell object files
 *.hi
@@ -26,7 +33,6 @@ exercism/ocaml/**/_build
 
 # Python caches
 **__pycache__
-
 
 ### CODEEVAL ###
 
