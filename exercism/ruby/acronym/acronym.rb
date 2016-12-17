@@ -1,6 +1,8 @@
-class Acronym
-  VERSION = 1
+module BookKeeping
+  VERSION = 2
+end
 
+module Acronym
   def self.abbreviate(phrase)
     # We want to include in the abbreviation:
     # 1. Any capital letter not immediately preceded by another capital letter
