@@ -19,7 +19,11 @@ exercism/kotlin/*/build
 build.gradle
 .keep
 
-# Haskell object files
+# Haskell files
+exercism/haskell/*/*.cabal
+exercism/haskell/*/*.yaml
+exercism/haskell/*/*.cabal
+exercism/haskell/*/.stack-work
 *.hi
 
 # Ocaml build files

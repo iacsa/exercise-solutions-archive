@@ -1,9 +1,13 @@
-module Beer (sing, verse) where
+module Beer (sing, verse, song) where
 
 import Data.Char (toUpper)
+import Data.List (intercalate)
+
+song :: String
+song = sing 99 0
 
 sing :: Int -> Int -> String
-sing upper lower = unlines $ map verse $ reverse [lower .. upper]
+sing upper lower = intercalate "\n" $ map verse $ reverse [lower .. upper]
 
 verse :: Int -> String
 verse n = unlines [
