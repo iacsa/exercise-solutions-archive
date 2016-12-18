@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 5
+end
+
 require 'time'
 
 class Gigasecond

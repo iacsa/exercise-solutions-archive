@@ -1,6 +1,8 @@
-class FoodChain
+module BookKeeping
   VERSION = 2
+end
 
+class FoodChain
   SPECIAL = [
     "",
     "It wriggled and jiggled and tickled inside her.\n",

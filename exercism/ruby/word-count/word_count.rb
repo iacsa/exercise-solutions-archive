@@ -1,6 +1,8 @@
-class Phrase
+module BookKeeping
   VERSION = 1
+end
 
+class Phrase
   attr_reader :word_count
 
   def initialize(line)

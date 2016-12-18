@@ -1,5 +1,8 @@
+module BookKeeping
+  VERSION = 3
+end
+
 class Raindrops
-  VERSION = 1
   SOUNDS = [["Pling", 3], ["Plang", 5], ["Plong", 7]]
 
   def Raindrops.convert (n)

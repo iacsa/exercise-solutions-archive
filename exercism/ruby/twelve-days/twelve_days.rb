@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 2
+end
+
 class TwelveDays
   VERSION = 1
 
@@ -28,6 +32,3 @@ class TwelveDays
     end.join("\n")
   end
 end
-
-
-

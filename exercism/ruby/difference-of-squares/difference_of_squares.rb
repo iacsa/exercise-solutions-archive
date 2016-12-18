@@ -1,20 +1,27 @@
+module BookKeeping
+  VERSION = 3
+end
+
 class Squares
-  VERSION = 1
-  def initialize (n)
+
+  def initialize(n)
     @n = n
   end
+
   def sum_of_squares
-    power_sum(1, 2)
-  end
-  def square_of_sums
     power_sum(2, 1)
   end
+
+  def square_of_sum
+    power_sum(1, 2)
+  end
+
   def difference
-    square_of_sums - sum_of_squares
+    square_of_sum - sum_of_squares
   end
 
   private
-  def power_sum (a, b)
-    (1..@n).reduce{|a, i| a + i ** b} ** a
+  def power_sum(inner, outer)
+    (1 .. @n).reduce(0) { |sum, x| sum + x ** inner } ** outer
   end
 end

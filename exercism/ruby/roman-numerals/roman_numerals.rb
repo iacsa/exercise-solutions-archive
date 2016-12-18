@@ -1,5 +1,8 @@
+module BookKeeping
+  VERSION = 2
+end
+
 class Fixnum
-  VERSION = 1
 
   @@values = {
     "M" => 1000, "CM" => 900, "D" => 500, "CD" => 400,

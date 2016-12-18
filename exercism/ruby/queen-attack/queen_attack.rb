@@ -1,7 +1,12 @@
+module BookKeeping
+  VERSION = 2
+end
+    
 class Queens
 
   def initialize (white: [0, 3], black: [7, 3])
     raise ArgumentError if white == black
+    raise ArgumentError unless (white + black).all?(&(0..7).method('include?'))
 
     @w_row, @w_file = white
     @b_row, @b_file = black
@@ -21,7 +26,7 @@ class Queens
     board[@w_row][@w_file] = "W"
     board[@b_row][@b_file] = "B"
 
-    board.map{|row| row.join(" ") }.join("\n")
+    board.map{ |row| row.join(" ") }.join("\n")
   end
 
   def attack?

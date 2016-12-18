@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 1
+end
+
 class Prime
   def self.nth(n)
     raise ArgumentError if n <= 0

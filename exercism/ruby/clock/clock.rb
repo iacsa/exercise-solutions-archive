@@ -1,9 +1,15 @@
+module BookKeeping
+  VERSION = 2
+end
+
 class Clock
 
   attr_reader :hour, :minute
 
   def self.at(h, m = 0)
-    c = Clock.new(h, m)
+    min = m % 60
+    hour = (h +  m / 60) % 24
+    c = Clock.new(hour, min)
   end
 
   def initialize(h, m)
@@ -16,9 +22,7 @@ class Clock
   end
 
   def +(delta)
-    min = @minute + delta
-    hour = (@hour +  min / 60) % 24
-    Clock.at(hour, min % 60)
+    Clock.at(@hour, @minute + delta)
   end
 
   def -(delta)

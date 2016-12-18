@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 1
+end
+
 class Trinary
   attr_reader :to_decimal
   def initialize (str)

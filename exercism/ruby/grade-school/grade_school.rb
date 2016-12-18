@@ -1,16 +1,20 @@
+module BookKeeping
+  VERSION = 3
+end
+
 class School
-  VERSION = 1
   def initialize
-    @students = Hash.new{|h, k| h[k] = []}
+    @students = Hash.new{ |h, k| h[k] = [] }
   end
-  def add (v, k)
-    @students[k] << v
-    @students[k].sort!
+  def add(student, grade)
+    @students[grade] << student
   end
-  def to_h
-    Hash[@students.sort]
+  def students(grade)
+    @students[grade].sort
   end
-  def grade (k)
-    @students[k]
+  def students_by_grade
+    @students.keys.sort.map do |grade| 
+      { grade: grade, students: students(grade) }
+    end
   end
 end

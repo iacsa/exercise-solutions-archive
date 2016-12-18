@@ -1,6 +1,8 @@
 class Bst
   include Enumerable
 
+  VERSION = 1
+
   attr_reader :data, :left, :right
 
   def initialize(val)
@@ -24,8 +26,12 @@ class Bst
   end
 
   def each 
-    @left.each{|i| yield(i) } unless @left.nil?
-    yield(@data)
-    @right.each{|i| yield(i) } unless @right.nil?
+    if block_given?
+      @left.each{ |i| yield(i) } unless @left.nil?
+      yield(@data)
+      @right.each{ |i| yield(i) } unless @right.nil?
+    else
+      to_enum
+    end
   end
 end

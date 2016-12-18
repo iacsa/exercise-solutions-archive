@@ -1,36 +1,59 @@
-class Element
+class SimpleLinkedList
   include Enumerable
+  attr_reader :head
+  alias_method :size, :count
+  alias_method :peek, :first
 
+  def initialize
+    @head = Element::EMPTY
+  end
+  
+  def each
+    element = @head
+    until element == Element::EMPTY
+      yield element.datum
+      element = element.next
+    end
+  end
+
+  def self.from_a(arr)
+    return new if arr.nil?
+    arr.reverse_each.with_object(new) { |datum, list| list.push(datum) }
+  end
+
+  def push(datum)
+    @head = Element.new(datum, @head)
+  end
+
+  def reverse
+    SimpleLinkedList.from_a(to_a.reverse)
+  end
+
+  def empty?
+    size.zero?
+  end
+
+  def pop
+    result = @head.datum
+    @head = @head.next
+    result
+  end
+end
+
+class Element
   # We don't want the last element / empty list to actually be nil, because we
-  # need it to have a #reverse method. So we use this singleton Element instead.
-  # Object.new also works, but makes error messages less informative.
+  # like useful error messages.
   EMPTY = self.new
   EMPTY.define_singleton_method(:nil?){ true }
-  EMPTY.define_singleton_method(:to_a){ [] }
-  EMPTY.define_singleton_method(:reverse){ self }
-  EMPTY.define_singleton_method(:each){ }
 
   attr_reader :datum, :next
-  def initialize(d, n)
+
+  def initialize(d, n = nil)
     @datum = d
     @next = n || EMPTY
   end
-  def self.to_a(e)
-    e.to_a
-  end
-  def self.from_a(values)
-    from_enum_reversed(values).reverse
-  end
-  def reverse
-    self.class.from_enum_reversed(self)
-  end
-  def each
-    yield datum
-    self.next.each{|e| yield e }
-  end
 
-  private
-    def self.from_enum_reversed(enum)
-      enum.inject(EMPTY){|head, value| new(value, head) }
-    end
+  def tail?
+    @next == EMPTY
+  end
 end

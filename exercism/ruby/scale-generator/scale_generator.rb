@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 1
+end
+
 class Scale
   attr_reader :pitches, :name
 

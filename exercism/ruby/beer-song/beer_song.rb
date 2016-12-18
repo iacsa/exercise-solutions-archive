@@ -1,3 +1,7 @@
+module BookKeeping
+  VERSION = 2
+end
+
 class BeerSong
   def verse (n)
     "#{bottles(n).capitalize} on the wall, "\
@@ -14,10 +18,10 @@ class BeerSong
   end
   def verses (n, m)
     n.downto(m).map do |i|
-      verse(i) + "\n"
-    end.join
+      verse(i)
+    end.join("\n")
   end
-  def sing
+  def lyrics
     verses(99, 0)
   end
 end
