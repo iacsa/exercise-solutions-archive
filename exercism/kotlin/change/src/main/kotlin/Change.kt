@@ -1,27 +1,27 @@
-class Change(val s: Set<Int>) {
+import java.util.NoSuchElementException
 
-  fun issue(amount: Int): List<Int> {
-    return give(amount, s.toSortedSet().reversed())
+class Change(val coins: Set<Int>) {
+
+  val best: MutableMap<Int, List<Int>?> = mutableMapOf(0 to emptyList())
+
+  fun memo(amount: Int): List<Int>? {
+    if (amount < 0) return null
+    if (best.containsKey(amount)) return best[amount]
+
+    val result = try {
+      coins.map { memo(amount - it)?.plus(it) }
+           .filterNotNull()
+           .sortedBy { it.size }
+           .first()
+    } catch (e: NoSuchElementException) {
+      null
+    }
+    
+    best[amount] = result
+    return result
   }
 
-  private fun give(amount: Int, coins: List<Int>): List<Int> {
-    if (amount == 0) return emptyList()
-    if (coins.isEmpty() || amount < 0) throw IllegalArgumentException()
-
-    if (coins.size == 1 || coins.first() <= amount && coins.first() >= 2 * coins[1]) {
-      return give(amount - coins.first(), coins) + coins.first()
-    }
-
-    try {
-      val l1 = give(amount - coins.first(), coins)
-      try {
-        val l2 = give(amount, coins.drop(1))
-        return if (l1.size < l2.size) l1 + coins.first() else l2
-      } catch (e: IllegalArgumentException) {
-        return l1 + coins.first()
-      }
-    } catch (e: IllegalArgumentException) {
-      return give(amount, coins.drop(1))
-    }
+  fun issue(amount: Int): List<Int> {
+    return memo(amount)?.sorted() ?: throw IllegalArgumentException()
   }
 }
