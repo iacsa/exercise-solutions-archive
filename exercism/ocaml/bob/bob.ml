@@ -1,7 +1,7 @@
 open Core.Std
 
 let is_silence query = String.strip query = ""
-let is_question query = String.is_suffix query ~suffix:"?"
+let is_question query = String.is_suffix (String.strip query) ~suffix:"?"
 let is_shout query = (String.uppercase query  = query) &&
                      (String.lowercase query <> query)
 

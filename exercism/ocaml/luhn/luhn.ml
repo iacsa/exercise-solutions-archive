@@ -11,3 +11,6 @@ let checksum (number: string) : int =
 
 let valid (number: string) : bool =
   0 = checksum number mod 10
+
+let add_check_digit (number: string) : string =
+  number ^ (string_of_int (9 - (checksum (number ^ "9") mod 10)))
