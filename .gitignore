@@ -10,6 +10,7 @@ exercism/**/test
 exercism/**/tests
 exercism/**/.gitignore
 exercism/crystal/**/spec
+exercism/ocaml/*/.merlin
 *.txt
 Makefile
 
