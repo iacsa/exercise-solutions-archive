@@ -21,9 +21,7 @@ split (c : s)
     word w [] = [w]
     word w (c1 : c2 : s)
       | c1 == '\'' && isAlphaNum c2 = word (w ++ [c1, c2]) s
-      | isAlphaNum c1 = word (w ++ [c1]) (c2 : s)
-      | otherwise = w : split (c2 : s)
-    word w [c]
-      | isAlphaNum c = [w ++ [c]]
-      | otherwise = [w]
+    word w (c : s)
+      | isAlphaNum c = word (w ++ [c]) s
+      | otherwise = w : split s
 
