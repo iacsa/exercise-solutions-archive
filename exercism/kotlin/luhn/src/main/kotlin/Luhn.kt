@@ -12,7 +12,7 @@ class Luhn(val number: Long) {
     get() = checksum % 10 == 0
 
   val create: Long
-    get() = 10 * number + (10 - Luhn(10 * number).checksum % 10) % 10
+    get() = 10 * number + (9 - Luhn(10 * number + 9).checksum % 10)
 
   init {
     var x = number
