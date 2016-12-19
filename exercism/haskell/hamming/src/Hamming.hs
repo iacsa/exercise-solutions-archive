@@ -1,4 +1,6 @@
-module DNA (hammingDistance) where
+module Hamming (distance) where
 
-hammingDistance :: String -> String -> Integer
-hammingDistance s1 s2 = sum [1 | (c1, c2) <- zip s1 s2, c1 /= c2]
+distance :: String -> String -> Maybe Integer
+distance s1 s2
+  | length s1 == length s2 = Just $ sum [1 | (c1, c2) <- zip s1 s2, c1 /= c2]
+  | otherwise = Nothing

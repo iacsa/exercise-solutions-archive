@@ -26,10 +26,13 @@ static ALLERGENS: &'static [Allergen] = &[
 ];
 
 impl Allergies {
-  pub fn is_allergic_to (&self, v: &Allergen) -> bool {
+  pub fn new(n: u32) -> Self {
+    Allergies(n)
+  }
+  pub fn is_allergic_to(&self, v: &Allergen) -> bool {
     self.0 & (v.clone() as u32) != 0
   }
-  pub fn allergies (&self) -> Vec<Allergen> {
+  pub fn allergies(&self) -> Vec<Allergen> {
     ALLERGENS.iter().filter(|v| self.is_allergic_to(v)).cloned().collect()
   }
 }
