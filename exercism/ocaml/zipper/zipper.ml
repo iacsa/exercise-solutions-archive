@@ -3,7 +3,7 @@ open Tree
 
 type 'a trail = L of 'a t | R of 'a t | T
 and 'a t = { focus: 'a Tree.t; trail: 'a trail }
-with sexp
+  [@@deriving sexp]
 
 let rec equal veq a b =
   Tree.equal veq a.focus b.focus &&

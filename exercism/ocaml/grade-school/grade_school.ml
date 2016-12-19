@@ -1,12 +1,13 @@
 open Core.Std
 
 type school = string list Int.Map.t
+
 (** Create a new empty school *)
 let create () : school = Int.Map.empty
 
 (** Add a student to a school *)
 let add (name: string) (g: int) (s: school) : school =
-  Int.Map.change s g (fun x -> Some (name :: (Option.value x ~default:[])))
+  Int.Map.change s g ~f:(fun x -> Some (name :: (Option.value x ~default:[])))
 
 (** Get all the students from a grade *)
 let grade (g: int) (s: school) : string list =
