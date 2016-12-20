@@ -24,8 +24,8 @@ defmodule School do
   @doc """
   Sorts the school by grade and name.
   """
-  @spec sort(Map) :: Map.t
+  @spec sort(Map.t) :: Map.t
   def sort(db) do
-    db
+    Map.to_list(db)
   end
 end

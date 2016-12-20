@@ -9,9 +9,15 @@ defmodule PrimeFactors do
   """
   @spec factors_for(pos_integer) :: [pos_integer]
   def factors_for(number) do
-    case Enum.find(2..number+1, & rem(number, &1) == 0) do
-      p when is_integer(p) -> [p | factors_for(div(number, p))]
-      _ -> []
+    fac_rev(number, 2, [])
+    |> Enum.reverse
+  end
+
+  def fac_rev(number, current, factors) do
+    limit = round(:math.sqrt(number) + 1)
+    case Enum.find(current .. limit, & rem(number, &1) == 0) do
+      nil -> if number == 1 do factors else [number | factors] end
+      p -> fac_rev(div(number, p), p, [p | factors])
     end
   end
 end

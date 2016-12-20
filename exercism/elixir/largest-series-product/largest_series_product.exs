@@ -26,9 +26,10 @@ defmodule Series do
   """
   @spec largest_product(String.t, non_neg_integer) :: non_neg_integer
   def largest_product(number_string, size) do
-    if size > String.length(number_string) or size == 0 do
-      1
-    else
+    cond do
+      size == 0 -> 1
+      size > String.length(number_string) or size < 0 -> raise ArgumentError
+      true ->
       number_string |> slices(size)
                     |> Stream.map(fn (x) -> Enum.reduce(x, 1, &*/2) end)
                     |> Enum.max

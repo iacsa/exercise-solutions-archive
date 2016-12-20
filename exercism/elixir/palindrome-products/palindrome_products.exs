@@ -5,9 +5,8 @@ defmodule Palindromes do
   """
   @spec generate(non_neg_integer, non_neg_integer) :: map() 
   def generate(max_factor, min_factor \\ 1) do
-    (for a <- min_factor..max_factor,
-         b <- min_factor..max_factor,
-         a <= b,
+    (for a <- min_factor .. max_factor,
+         b <- a .. max_factor,
          is_palindrome?(a*b),
          do: [a, b])
       |> Enum.reverse

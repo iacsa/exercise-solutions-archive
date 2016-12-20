@@ -62,8 +62,8 @@ defmodule Zipper do
   @spec right(Z.t) :: Z.t | nil
   def right(z) do
     case z.focus.right do
-      r when not is_nil(r) -> %Zipper{focus: r, trail: {:right, z}}
       nil -> nil
+      r -> %Zipper{focus: r, trail: {:right, z}}
     end
   end
 
@@ -73,7 +73,7 @@ defmodule Zipper do
   @spec up(Z.t) :: Z.t
   def up(z) do
     case z.trail do
-      :top -> z
+      :top -> nil
       {_, father} -> father
     end
   end
