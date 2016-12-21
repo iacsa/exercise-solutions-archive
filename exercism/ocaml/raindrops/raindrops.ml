@@ -8,4 +8,4 @@ let raindrop (n: int) : string =
   sound_list
     |> List.filter_map ~f:make_sound
     |> List.reduce ~f:(^)
-    |> Option.value ~default:(string_of_int n)
+    |> Option.value ~default:(Int.to_string n)

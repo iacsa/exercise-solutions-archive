@@ -3,7 +3,7 @@ open Core.Std
 let bottles : int -> string = function
   | 0 -> "No more bottles of beer"
   | 1 -> "1 bottle of beer"
-  | n -> string_of_int n ^ " bottles of beer"
+  | n -> Int.to_string n ^ " bottles of beer"
 
 let middle : int -> string = function
   | 0 -> ".\nGo to the store and buy some more, "
