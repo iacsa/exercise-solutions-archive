@@ -1,14 +1,17 @@
 open Core.Std
+open Core
+open Sys
+
+exception UnmatchedClosingBracket
 
 let are_balanced (expr: string) : bool =
-  let rec aux stack chars =
-    match stack, chars with
-    | ss, [] -> ss = []
-    | ss, c :: cs when List.mem ['('; '['; '{'] c -> aux (c :: ss) cs
-    | '(' :: ss, ')' :: cs
-    | '[' :: ss, ']' :: cs
-    | '{' :: ss, '}' :: cs -> aux ss cs
-    | _, c :: _ when List.mem [')'; ']'; '}'] c -> false
-    | ss, _ :: cs -> aux ss cs
+  let reduce = function
+    | stack, c when List.mem ['('; '['; '{'] c -> (c :: stack)
+    | '(' :: stack, ')'
+    | '[' :: stack, ']'
+    | '{' :: stack, '}' -> stack
+    | _, c when List.mem [')'; ']'; '}'] c -> raise UnmatchedClosingBracket
+    | stack, _ -> stack
   in
-    aux [] (String.to_list expr)
+    try [] = List.fold ~f:(Tuple2.curry reduce) ~init:[] (String.to_list expr)
+    with UnmatchedClosingBracket -> false
