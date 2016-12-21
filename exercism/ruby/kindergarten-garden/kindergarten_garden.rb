@@ -1,19 +1,19 @@
 class Garden
 
-  Students = [
+  STUDENTS = [
     "alice", "bob", "charlie", "david",
     "eve", "fred", "ginny", "harriet",
     "ileana", "joseph", "kincaid", "larry"
   ]
   
-  Plants = {
+  PLANTS = {
     'V' => :violets,
     'R' => :radishes,
     'G' => :grass,
     'C' => :clover
   }
 
-  def initialize(garden, students = Students)
+  def initialize(garden, students = STUDENTS)
     @students = students.map(&:downcase).sort
 
     row1, row2 = garden.split.map do |row|
@@ -21,7 +21,7 @@ class Garden
     end
 
     @plants = row1.zip(row2).map do |parcel|
-      parcel.flatten.map{|cell| Plants[cell] }
+      parcel.flatten.map{|cell| PLANTS[cell] }
     end
   end
 
