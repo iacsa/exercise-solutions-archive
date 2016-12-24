@@ -8,6 +8,10 @@ exercism/**/*-test.*
 exercism/**/*_test.*
 exercism/**/test
 exercism/**/tests
+exercism/**/Tests.*
+elm-stuff
+*package.json
+node_modules
 exercism/**/.gitignore
 exercism/crystal/**/spec
 exercism/ocaml/*/.merlin
@@ -22,7 +26,7 @@ build.gradle
 
 # Haskell files
 exercism/haskell/*/*.cabal
-exercism/haskell/*/*.yaml
+exercism/haskell/*/stack.yaml
 exercism/haskell/*/*.cabal
 exercism/haskell/*/.stack-work
 *.hi
