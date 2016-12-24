@@ -1,9 +1,9 @@
 class BookKeeping
-  VERSION = 2
+  VERSION = 3
 end
 
 class Pangram
-  def self.is_pangram?(string)
+  def self.pangram?(string)
     ('a' .. 'z').all?(&(string.downcase.method("include?")))
   end
 end

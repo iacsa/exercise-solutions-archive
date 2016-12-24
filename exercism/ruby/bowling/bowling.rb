@@ -1,8 +1,10 @@
 module BookKeeping
-  VERSION = 2
+  VERSION = 3
 end
 
 class Game
+  class BowlingError < StandardError
+  end
 
   def initialize
     @half_frames_completed = 0
@@ -14,7 +16,7 @@ class Game
   end
 
   def score
-    @finished and @score or raise StandardError
+    @finished and @score or raise BowlingError
   end
 
   def roll(pins)
@@ -22,11 +24,11 @@ class Game
     @pins_remaining = 10 if @half_frames_completed.even?
 
     # Deny further rolls if game is completed
-    raise StandardError if @finished
+    raise BowlingError if @finished
 
     # Make sure `pins` only holds legal values
-    raise StandardError unless pins.integer?
-    raise StandardError unless (0 .. @pins_remaining).include?(pins)
+    raise BowlingError unless pins.integer?
+    raise BowlingError unless (0 .. @pins_remaining).include?(pins)
 
     @pins_remaining -= pins
 
