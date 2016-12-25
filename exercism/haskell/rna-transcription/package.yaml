@@ -1,0 +1,17 @@
+name: rna-transcription
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: DNA
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - rna-transcription
+      - hspec

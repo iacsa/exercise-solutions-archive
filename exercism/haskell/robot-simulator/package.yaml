@@ -1,0 +1,17 @@
+name: robot-simulator
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: Robot
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - robot-simulator
+      - hspec

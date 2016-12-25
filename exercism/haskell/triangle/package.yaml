@@ -1,0 +1,17 @@
+name: triangle
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: Triangle
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - triangle
+      - hspec

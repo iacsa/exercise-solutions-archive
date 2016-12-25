@@ -1,0 +1,17 @@
+name: difference-of-squares
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: Squares
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - difference-of-squares
+      - hspec

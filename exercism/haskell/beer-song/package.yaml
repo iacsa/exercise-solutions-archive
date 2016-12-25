@@ -1,0 +1,17 @@
+name: beer-song
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: Beer
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - beer-song
+      - hspec

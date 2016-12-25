@@ -1,0 +1,17 @@
+name: phone-number
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: Phone
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - phone-number
+      - hspec

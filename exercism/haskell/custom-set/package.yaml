@@ -1,0 +1,17 @@
+name: custom-set
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: CustomSet
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - custom-set
+      - hspec

@@ -1,0 +1,17 @@
+name: list-ops
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: ListOps
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - list-ops
+      - hspec

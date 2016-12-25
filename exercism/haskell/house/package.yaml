@@ -1,0 +1,17 @@
+name: house
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: House
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - house
+      - hspec

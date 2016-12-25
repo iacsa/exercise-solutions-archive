@@ -1,0 +1,17 @@
+name: binary-search-tree
+
+dependencies:
+  - base
+
+library:
+  exposed-modules: BST
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - binary-search-tree
+      - hspec

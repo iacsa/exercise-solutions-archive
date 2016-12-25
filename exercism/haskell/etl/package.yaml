@@ -1,0 +1,18 @@
+name: etl
+
+dependencies:
+  - base
+  - containers
+
+library:
+  exposed-modules: ETL
+  source-dirs: src
+  dependencies:
+
+tests:
+  test:
+    main: Tests.hs
+    source-dirs: test
+    dependencies:
+      - etl
+      - hspec
