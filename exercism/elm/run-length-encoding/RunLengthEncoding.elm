@@ -22,7 +22,7 @@ encodeMatch match =
         [Just c] ->
           c
         _ ->
-          "" -- unreachable
+          Debug.crash "unreachable"
   in
     if length > 1 then
       toString length ++ char
@@ -45,7 +45,7 @@ decodeMatch match =
             |> Result.withDefault 1
             |> (,) c
         _ ->
-          ("", 0) -- unreachable
+          Debug.crash "unreachable"
   in
     String.repeat count char
 
