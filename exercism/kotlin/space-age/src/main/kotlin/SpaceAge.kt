@@ -1,8 +1,11 @@
 class SpaceAge(val seconds: Long) {
 
-  // Note: Don't do any rounding, that's just stupid
+  private fun age(factor: Double) : Double {
+    val exact = seconds / 31557600.0 / factor
+    // The bestest way to do rounding
+    return java.lang.String.format("%.2f", exact).toDouble()
+  }
 
-  private fun age(factor: Double) = seconds / 31557600.0 / factor
   fun onEarth() = age(1.0)
   fun onMercury() = age(0.240847)
   fun onVenus() = age(0.61519726)
