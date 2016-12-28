@@ -13,7 +13,7 @@ foldr _ acc [] = acc
 foldr f acc (x:xs) = f x (foldr f acc xs)
 
 length :: [a] -> Int
-length = foldl' (\a x -> a+1) 0 
+length = foldl' (const . (+ 1)) 0 
 
 reverse :: [a] -> [a]
 reverse = foldl' (flip (:)) []
@@ -29,7 +29,7 @@ filter f xs = foldr check [] xs
       | otherwise = a
 
 (++) :: [a] -> [a] -> [a]
-xs ++ ys = foldr (:) ys xs
+(++) = flip $ foldr (:)
 
 concat :: [[a]] -> [a]
 concat = foldr (++) []
