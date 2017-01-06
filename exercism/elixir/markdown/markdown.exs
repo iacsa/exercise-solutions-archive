@@ -1,67 +1,82 @@
 defmodule Markdown do
-  @doc """
-    Parses a given string with Markdown syntax and returns the associated HTML for that string.
-  """
+
   @spec parse(String.t) :: String.t
-  def parse(m) do
-    patch(Enum.join(Enum.map(String.split(m, "\n"), fn(t) -> process(t) end)))
+  def parse(markdown) do
+    markdown
+    |> String.split("\n")
+    |> Enum.map_join(&process/1)
+    |> encapsulate_lists
   end
 
-  defp process(t) do
-    if String.starts_with?(t, "#") || String.starts_with?(t, "*") do
-      if String.starts_with?(t, "#") do
-        enclose_with_header_tag(parse_header_md_level(t))
-      else
-        parse_list_md_level(t)
-      end
-    else
-      enclose_with_paragraph_tag(String.split(t))
-    end
-  end
-
-  defp parse_header_md_level(hwt) do
-    [h | t] = String.split(hwt)
-    {to_string(String.length(h)), Enum.join(t, " ")}
-  end
-
-  defp parse_list_md_level(l) do
-    t = String.split(String.trim_leading(l, "* "))
-    "<li>" <> join_words_with_tags(t) <> "</li>"
-  end
-
-  defp enclose_with_header_tag({hl, htl}) do
-    "<h" <> hl <> ">" <> htl <> "</h" <> hl <> ">"
-  end
-
-  defp enclose_with_paragraph_tag(t) do
-    "<p>#{join_words_with_tags(t)}</p>"
-  end
-
-  defp join_words_with_tags(t) do
-    Enum.join(Enum.map(t, fn(w) -> replace_md_with_tag(w) end), " ")
-  end
-
-  defp replace_md_with_tag(w) do
-    replace_suffix_md(replace_prefix_md(w))
-  end
-
-  defp replace_prefix_md(w) do
+  @spec process(String.t) :: String.t
+  defp process(line) do
     cond do
-      w =~ ~r/^#{"__"}{1}/ -> String.replace(w, ~r/^#{"__"}{1}/, "<strong>", global: false)
-      w =~ ~r/^[#{"_"}{1}][^#{"_"}+]/ -> String.replace(w, ~r/_/, "<em>", global: false)
-      true -> w
+      String.starts_with?(line, "#") ->
+        process_header(line)
+      String.starts_with?(line, "*") ->
+        process_list(line)
+      true ->
+        process_paragraph(line)
     end
   end
 
-  defp replace_suffix_md(w) do
-    cond do
-      w =~ ~r/#{"__"}{1}$/ -> String.replace(w, ~r/#{"__"}{1}$/, "</strong>")
-      w =~ ~r/[^#{"_"}{1}]/ -> String.replace(w, ~r/_/, "</em>")
-      true -> w
-    end
+  @spec process_header(String.t) :: String.t
+  defp process_header(header) do
+    [marker , text] = String.split(header, "\s", parts: 2)
+    enclose_in(text, "h#{String.length(marker)}")
   end
 
-  defp patch(l) do
-    String.replace_suffix(String.replace(l, "<li>", "<ul>" <> "<li>", global: false), "</li>", "</li>" <> "</ul>")
+  @spec process_list(String.t) :: String.t
+  defp process_list(line) do
+    line
+    |> String.trim_leading("* ")
+    |> emphasize_words
+    |> enclose_in("li")
   end
+
+  @spec process_paragraph(String.t) :: String.t
+  defp process_paragraph(line) do
+    line
+    |> emphasize_words
+    |> enclose_in("p")
+  end
+
+  @spec enclose_in(String.t, String.t) :: String.t
+  defp enclose_in(text, tag) do
+    "<#{tag}>#{text}</#{tag}>"
+  end
+
+  @spec emphasize_words(String.t) :: String.t
+  defp emphasize_words(line) do
+    line
+    |> String.split
+    |> Enum.map_join(" ", &process_word/1)
+  end
+
+  @spec process_word(String.t) :: String.t
+  defp process_word(word) do
+    word
+    |> tag_strong
+    |> tag_em
+  end
+
+  @spec tag_strong(String.t) :: String.t
+  defp tag_strong(word) do
+    word
+    |> String.replace_suffix("__", "</strong>")
+    |> String.replace_prefix("__", "<strong>")
+  end
+
+  @spec tag_em(String.t) :: String.t
+  defp tag_em(word) do
+    word
+    |> String.replace_prefix("_", "<em>")
+    |> String.replace_suffix("_", "</em>")
+  end
+
+  @spec encapsulate_lists(String.t) :: String.t
+  defp encapsulate_lists(l) do
+    String.replace(l, ~r/<li>(.*)<\/li>/, "<ul><li>\\1</li></ul>")
+  end
+
 end
