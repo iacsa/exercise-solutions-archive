@@ -1,12 +1,7 @@
-module BookKeeping
-  VERSION = 5
-end
+module Gigasecond
+  GIGASECOND = 10**9
 
-require 'time'
-
-class Gigasecond
-  VERSION = 1
-  def Gigasecond.from(date)
-    date + 10**9
+  def self.from(date)
+    date + GIGASECOND
   end
 end
