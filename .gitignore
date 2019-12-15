@@ -2,6 +2,7 @@
 
 # Forbid files from exercism.io
 .version
+.exercism
 exercism/**/*.md
 exercism/**/test.*
 exercism/**/*-test.*

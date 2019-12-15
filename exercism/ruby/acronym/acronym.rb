@@ -1,7 +1,3 @@
-module BookKeeping
-  VERSION = 2
-end
-
 module Acronym
   def self.abbreviate(phrase)
     # We want to include in the abbreviation:
